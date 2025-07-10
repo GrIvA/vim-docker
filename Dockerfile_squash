@@ -1,0 +1,5 @@
+FROM GrIvA/vim-i:dev as initial
+
+FROM alpine:3
+
+COPY --from=initial / /
