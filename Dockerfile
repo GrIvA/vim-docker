@@ -1,4 +1,4 @@
-FROM alpine:3
+FROM alpine:3 as base
 
 RUN apk --no-cache add git python3 nodejs npm fzf ripgrep alpine-sdk ncurses-dev curl xclip tig && \ 
     mkdir /project && \
@@ -17,8 +17,13 @@ RUN apk --no-cache add git python3 nodejs npm fzf ripgrep alpine-sdk ncurses-dev
 COPY .vim /root/.vim
 COPY .vimrc /root/.vimrc
 
-ENV TERM=screen-256color
+# Second stage
+FROM alpine:3
 
 WORKDIR /project
+
+COPY --from=base / /
+
+ENV TERM=screen-256color
 
 ENTRYPOINT ["vim"]
